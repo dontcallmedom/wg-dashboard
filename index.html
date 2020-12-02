@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang=en>
+  <head>
+    <meta charset=utf-8>
+    <title>Working Group Specifications Dashboard</title>
+    <link rel="stylesheet" href="https://get.mavo.io/mavo.css"/>
+    <script src="https://dev.mavo.io/dist/mavo.js"></script>
+    <style>
+      th { color: white; background-color: #005A9C}
+      th a:link, th a:visited { color: white;}
+      th[scope=row] { text-align: right; position: sticky; z-index: 1; left:0;}
+      .good { background-color: #0f0;}
+      .warning { background-color: #fc3;}
+      .failure { background-color: #f00; color: white;}
+      td, th { border: thin solid black; padding: 10px;}
+      thead tr:first-child th, th.categorystart, td.categorystart { border-left-width:3px ;}
+      tbody tr:first-child th, tbody tr:first-child td { border-top-width: 3px;}
+      table { border-collapse: collapse;}
+      thead { top: 0; position: sticky; z-index: 1;}
+      .wpt-res { display: inline-block; width: 7em; font-size: 12px; border-radius: 5%;}
+      span.warning { display: block;}
+      .wpt-res img { vertical-align: middle;}
+      .wpt-res .name { display: inline-block; color: white; background-color: #010101; width: 4em;}
+      /* from https://github.com/web-platform-tests/wpt.fyi/blob/f8d9beebe98a4d254d1ae0d0283c4fe7cef3196e/webapp/components/wpt-colors.js#L30 */
+      .passes-none { background-color: rgb(229, 115, 115); color: white;}
+      .passes-hardly { background-color: rgb(255, 183, 77);}
+      .passes-a-few { background-color: rgb(255, 213, 79);}
+      .passes-half { background-color: rgb(255, 241, 118);}
+      .passes-lots { background-color: rgb(220, 231, 117);}
+      .passes-most { background-color: rgb(174, 213, 129);}
+      .passes-all { background-color: rgb(129, 199, 132); }
+                                          
+    </style>
+  </head>
+  <body>
+    <h1>Working Group Specifications Dashboard</h1>
+    <a href="?source=https%3A%2F%2Fdontcallmedom.github.io%2Fwg-data-collector%2Fdata%2F47318.json">WebRTC</a>     <a href="?source=https%3A%2F%2Fdontcallmedom.github.io%2Fwg-data-collector%2Fdata%2F125908.json">WebTransport</a>     <a href="?source=https%3A%2F%2Fdontcallmedom.github.io%2Fwg-data-collector%2Fdata%2F45211.json">WebPerf</a> <a href="?source=https%3A%2F%2Fdontcallmedom.github.io%2Fwg-data-collector%2Fdata%2F109735">Immersive Web</a> <a href="?source=https%3A%2F%2Fdontcallmedom.github.io%2Fwg-data-collector%2Fdata%2F74168">Second Screen</a>
+    <main mv-app="webrtc"  mv-source="https://dontcallmedom.github.io/wg-data-collector/data/47318.json" mv-mode="read" mv-storage="https://github.com/dontcallmedom/mavo-test/">
+      <table>
+        <caption>Rec-track documents</caption>
+        <thead>
+          <tr>
+            <th rowspan=3>Spec</th><th colspan=3>TR Process</th><th colspan=5>Document infrastructure</th><th colspan="[if(config.confluence,4,1)]">Implementations</th><th colspan=5>Test suite</th></tr>
+          <tr><th class=categorystart rowspan=2>Status</th><th rowspan=2>Milestones</th><th rowspan=2>Next Steps</th><th rowspan=2 class=categorystart>Repo</th><th rowspan=2>Editing tool</th><th rowspan=2>Issues</th><th rowspan=2>PRs</th><th rowspan=2>Repo Status</th><th class=categorystart colspan=3 mv-if="config.confluence">IDL features in X implementations (WebConfluence)</th><th rowspan=2>WPT</th><th class=categorystart colspan=3>Coverage</th><th colspan=2>Todos</th></tr>
+          <tr><th class=categorystart  mv-if="config.confluence">0</th><th  mv-if="config.confluence">1</th><th  mv-if="config.confluence">2+</th><th class=categorystart>Files</th><th>Assertions</th><th title="Number of interface members, dictionary members and enum values defined in the spec">IDL surface</th><th>Issues</th><th>PRs</th>
+        </thead>
+        <tbody  mv-multiple="specifications">
+          <tr>
+            <th rowspan=2 scope=row><a property="editorDraft">[title]</a><span mv-if="!editorDraft">[title]</span></th>
+            <td rowspan=2>[trStatus]<br><span property="latestVersion"><a href="[href]"><time property=date></time></a></td>
+            <td rowspan=2><ul><li mv-multiple="milestones">[status]: <time property=date></time></li></ul></td>
+            <td rowspan=2  mv-mode="edit"><ul mv-multiple="actions"><li></li></ul></td>
+
+            <td rowspan=2 class=categorystart><a href='https://github.com/[repo]/'>[repo]</a> ([defaultBranch])</td>
+            <td rowspan=2 class=categorystart>[editingTool]</td>
+            <td rowspan=2 mv-path="issues">
+              <span mv-if="count(recent)">[count(recent)] 🆕<br></span>
+              <a mv-if="count(needWork)" href='https://github.com/[repo]/issues?q=is%3Aissue+is%3Aopen++-label%3A"pr+exists"+-label%3A"editorial"+-label%3A"ready+for+pr"+-label%3A"icebox"' title="[needWork.title]">[count(needWork)] <span aria-role="image" aria-label="issues that need work">🛠</span></a></td>
+            <td rowspan=2 mv-path="prs"><a mv-if="count(open)" href='https://github.com/[repo]/pulls'>[count(open)]</a><span mv-if="count(stalled)" class=warning> including [count(stalled)] stalled</span></td>
+            <td rowspan=2>
+              <span mv-multiple="check_runs"><a property="href" mv-if="conclusion === 'failure'" class="failure" title="Failure on '[title]': [summary]">✘</a></span><br>
+              <span mv-if="!hasPrPreview" class=warning>⚠ no PR preview</span>
+              <span mv-multiple="repoErrors" class=warning>,</span>
+            </td>
+
+            <td class=categorystart mv-if="config.confluence and !implementationSummary" colspan=3 rowspan=2>N/A</td>
+            <td mv-if="config.confluence and (implementationSummary != false)" rowspan="[if(!count(implementationGaps), 2, 1)]" class="[if(implementationSummary.noimpl,'categorystart  failure','categorystart')]"><span mv-if="implementationSummary.noimpl">[implementationSummary.noimpl]</span></td>
+            <td mv-if="config.confluence and (implementationSummary != false)" rowspan="[if(!count(implementationGaps), 2, 1)]" class="[if(implementationSummary.oneimpl,'warning','')]"><span mv-if="implementationSummary.oneimpl">[implementationSummary.oneimpl]</span></td>
+            <td mv-if="config.confluence and (implementationSummary != false)" rowspan="[if(!count(implementationGaps), 2, 1)]" class="[if(implementationSummary.twoimpl,'good','')]"><span mv-if="implementationSummary.twoimpl">[implementationSummary.twoimpl]</span></td>
+            </td>
+            <td rowspan=2>
+              <div mv-if="wpt.files">
+                <span class="wpt-res [wpt.impl.chrome.class]"><img src="chrome.svg" width="15" alt="Chrome:"> [wpt.impl.chrome.passes]/[wpt.impl.chrome.total]</span>
+                <span class="wpt-res [wpt.impl.firefox.class]"><img src="firefox.svg" width=15 alt="Firefox:"> [wpt.impl.firefox.passes]/[wpt.impl.firefox.total]</span>
+                <span class="wpt-res [wpt.impl.safari.class]"><img src="safari.svg" width=15 alt="Safari:"> [wpt.impl.safari.passes]/[wpt.impl.safari.total]</span>
+              </div>
+            </td>
+
+           <td  rowspan=2 class="categorystart [if(wpt.files == 0, 'warning', '')]"><a href="https://github.com/web-platform-tests/wpt/tree/master/[shortname]/">[wpt.files]</a></td>
+<td rowspan=2>[wpt.assertions]</td>
+            <td rowspan=2><span mv-if="idl">[idl.total]</span></td>
+            <td rowspan=2><a mv-if="count(wpt.issues)" href='https://github.com/web-platform-tests/wpt/issues?q=is%3Aissue+is%3Aopen+label%3A[wptShortname]'>[count(wpt.issues)]</a></td>
+            <td rowspan=2><a mv-if="count(wpt.prs)" href='https://github.com/web-platform-tests/wpt/pulls?q=is%3Apull_request+is%3Aopen+label%3A[wptShortname]+-label%3Achromium-export+-label%3Awebkit-export+-label%3Amozilla%3Agecko-sync'>[count(wpt.prs)]</a></td>
+            
+          </tr>
+          <tr  mv-if="count(implementationGaps) > 0">
+            <td class="categorystart" colspan=3><details>
+                <summary>Details…</summary>
+                <ul>
+                <li mv-multiple="implementationGaps"><code property="interface"></code><ul>
+                    <li  mv-multiple="missing"><code property="noimplementations"></code> miss <span mv-attribute="class" property="severity"><code mv-multiple="members"><span></span>, </code></span></li>
+                    </ul>
+              </ul></details></td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
+  </body>
+</html>
